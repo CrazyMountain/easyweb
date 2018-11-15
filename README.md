@@ -8,8 +8,8 @@ An easy implementation of web server.
 服务端口为：`localhost:4546`
 
 ```shell
-# 程序运行需要四个参数：数据库主机地址、数据库用户名、数据库用户密码、数据库名称
-> bin/main.exe <database_host> <database_username> <database_password> <database_name>
+# 编译后程序运行需要四个参数：数据库主机地址、数据库用户名、数据库用户密码、数据库名称
+> main.exe <database_host> <database_username> <database_password> <database_name>
 ```
 
 ### 数据库
