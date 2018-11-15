@@ -278,7 +278,7 @@ func getStarsList(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	// 校验参数
 	if !validateQuery1(&query, fanField) {
-		w.Write([]byte("Query with Illegal fields: " + r.URL.RawQuery + ". Logout cancel."))
+		w.Write([]byte("Query with Illegal fields: " + r.URL.RawQuery + ". Operation failed."))
 		return
 	}
 	// 获取关注列表
@@ -297,7 +297,7 @@ func getFansList(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	// 校验参数
 	if !validateQuery1(&query, starField) {
-		w.Write([]byte("Query with Illegal fields: " + r.URL.RawQuery + ". Logout cancel."))
+		w.Write([]byte("Query with Illegal fields: " + r.URL.RawQuery + ". Operation failed."))
 		return
 	}
 	// 获取粉丝列表
