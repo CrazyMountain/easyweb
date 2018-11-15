@@ -45,7 +45,7 @@ func initDB(host string, user string, password string, database string) {
 func main() {
 	if len(os.Args) != 5 {
 		fmt.Println("Illegal arguments: ", strings.Join(os.Args, " "))
-		fmt.Println("Usage: bin/main.exe <database_host> <database_username> <database_password> <database_name>")
+		fmt.Println("Usage: main.exe <database_host> <database_username> <database_password> <database_name>")
 		os.Exit(-1)
 	}
 	// 初始化数据库，端口默认3306
