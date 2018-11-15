@@ -9,7 +9,7 @@ An easy implementation of web server.
 
 ```shell
 # 程序运行需要四个参数：数据库主机地址、数据库用户名、数据库用户密码、数据库名称
-> ./test.exe <database_host> <database_username> <database_password> <database_name>
+> bin/main.exe <database_host> <database_username> <database_password> <database_name>
 ```
 
 ### 数据库
