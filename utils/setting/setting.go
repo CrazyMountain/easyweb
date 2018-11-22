@@ -7,14 +7,15 @@ import (
 
 var (
 	Config *ini.File
-
+	// server
 	Port int
-
+	// database
 	DatabaseType     string
 	DatabaseHost     string
 	DatabasePort     int
 	DatabaseUsername string
 	DatabasePassword string
+	Database         string
 )
 
 func init() {
@@ -34,4 +35,5 @@ func loadDatabaseSetting() {
 	DatabasePort = database.Key("port").MustInt(3306)
 	DatabaseUsername = database.Key("username").String()
 	DatabasePassword = database.Key("password").String()
+	Database = database.Key("database").String()
 }
