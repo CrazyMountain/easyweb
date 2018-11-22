@@ -23,11 +23,6 @@ func init() {
 		dbUsername, dbPassword, dbHost, dbPort, dbDatabase))
 	CheckErr(err)
 
-	if !db.HasTable(&User{}) {
-		db.CreateTable(&User{})
-	}
-}
-
-func IsTableExists(table string) bool {
-	return db.HasTable(table)
+	db.DB().SetMaxOpenConns(setting.MaxOpenConn)
+	db.DB().SetMaxIdleConns(setting.MaxIdelConn)
 }
