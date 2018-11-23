@@ -8,13 +8,13 @@ import (
 )
 
 func InitRouter() *gin.Engine {
-	router := gin.New()
-	router.Use(gin.Logger())
-	router.Use(gin.Recovery())
+	router := gin.Default()
+	//router.Use(gin.Logger())
+	//router.Use(gin.Recovery())
 
 	gin.SetMode(setting.Mode)
 
-	user := router.Group("/v1/user")
+	user := router.Group("/v1/users")
 	{
 		// 注册
 		user.POST("", users.SignUp)
@@ -26,11 +26,11 @@ func InitRouter() *gin.Engine {
 		user.GET("/:id/fans", users.GetFans)
 	}
 
-	session := router.Group("/v1/session")
+	session := router.Group("/v1/sessions")
 	{
 		// 登录退出
 		session.POST("", sessions.SignIn)
-		session.POST("/:id", sessions.SignOut)
+		session.DELETE("", sessions.SignOut)
 	}
 
 	return router

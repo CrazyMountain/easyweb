@@ -24,5 +24,5 @@ func init() {
 	CheckErr(err)
 
 	db.DB().SetMaxOpenConns(setting.MaxOpenConn)
-	db.DB().SetMaxIdleConns(setting.MaxIdelConn)
+	db.DB().SetMaxIdleConns(setting.MaxIdleConn)
 }

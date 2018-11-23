@@ -21,24 +21,6 @@ func ValidateFiled(field, value string, c *gin.Context) bool {
 	return true
 }
 
-// 校验用户名和密码
-func ValidateUsernameAndPassword(username, password string, c *gin.Context) bool {
-	if !ValidateFiled("username", username, c) {
-		return false
-	}
-	if models.IsUserExists(username) {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error":   response.Msg[http.StatusBadRequest],
-			"message": fmt.Sprintf("User %s already exists.", username),
-		})
-		return false
-	}
-	if !ValidateFiled("password", password, c) {
-		return false
-	}
-	return true
-}
-
 // 检查密码是否正确
 func CheckPassword(username, password string, c *gin.Context) bool {
 	if models.IsPasswordCorrect(username, password) {
