@@ -3,7 +3,6 @@ package users
 import (
 	"easyweb/models"
 	"easyweb/routers/v1/common"
-	"easyweb/utils/response"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -11,27 +10,34 @@ import (
 
 func SignUp(c *gin.Context) {
 	username := c.PostForm("username")
-	// 校验用户名和密码
-	if !common.ValidateFiled("username", username, c) {
-		return
-	}
-	if models.IsUserExists(username) {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error":   response.Msg[http.StatusBadRequest],
-			"message": fmt.Sprintf("User %s already exists.", username),
-		})
+	// 校验用户名
+	if len(username) == 0 {
+		errMsg := "Field username missing."
+		common.OperationFailed(c, http.StatusBadRequest, errMsg)
 		return
 	}
 
+	if ok, _ := models.IsUserExists(username); ok {
+		errMsg := fmt.Sprintf("User %s already exists.", username)
+		common.OperationFailed(c, http.StatusBadRequest, errMsg)
+		return
+	}
+
+	// 校验密码
 	password := c.PostForm("password")
-	if !common.ValidateFiled("password", password, c) {
+	if len(password) == 0 {
+		errMsg := "Field password missing."
+		common.OperationFailed(c, http.StatusBadRequest, errMsg)
 		return
 	}
 
 	// 用户入库
-	models.AddUser(username, password)
+	if err := models.AddUser(username, password); nil != err {
+		common.OperationFailed(c, http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": response.Msg[http.StatusOK],
-	})
+	// 创建成功
+	description := fmt.Sprintf("User %s signed up successfully.", username)
+	common.OperationSuccess(c, description)
 }

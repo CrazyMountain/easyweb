@@ -8,9 +8,9 @@ import (
 )
 
 func InitRouter() *gin.Engine {
-	router := gin.Default()
-	//router.Use(gin.Logger())
-	//router.Use(gin.Recovery())
+	router := gin.New()
+	router.Use(gin.Logger())
+	router.Use(gin.Recovery())
 
 	gin.SetMode(setting.Mode)
 
@@ -18,12 +18,14 @@ func InitRouter() *gin.Engine {
 	{
 		// 注册
 		user.POST("", users.SignUp)
+	}
 
+	follow := user.Group("/:username/follows")
+	{
 		// 关注
-		user.POST("/:id", users.Star)
-		user.DELETE("/:id", users.UnStar)
-		user.GET("/:id/stars", users.GetStars)
-		user.GET("/:id/fans", users.GetFans)
+		follow.POST("", users.Follow)
+		follow.DELETE("", users.UnFollow)
+		follow.GET("/:flag", users.GetFollows)
 	}
 
 	session := router.Group("/v1/sessions")
