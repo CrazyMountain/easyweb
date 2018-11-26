@@ -10,7 +10,7 @@ const (
 	Failed  = "Operation failed."
 )
 
-func OperationSuccess(c *gin.Context, description string, data ...interface{}) {
+func OperationSuccess(c *gin.Context, description string, data interface{}) {
 	c.JSON(http.StatusOK, gin.H{
 		"description": description,
 		"message":     Success,

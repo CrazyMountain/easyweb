@@ -11,7 +11,7 @@ func InitRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
-
+	gin.LoggerWithWriter()
 	gin.SetMode(setting.Mode)
 
 	user := router.Group("/v1/users")

@@ -34,7 +34,7 @@ func Follow(c *gin.Context) {
 
 	// 校验是否已经关注
 	if ok, _ := models.IsFollowExists(fan, star); ok {
-		errMsg := fmt.Sprintf("User %s has already follows user %s.", fan, star)
+		errMsg := fmt.Sprintf("User %s has already followed user %s.", fan, star)
 		common.OperationFailed(c, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -46,7 +46,7 @@ func Follow(c *gin.Context) {
 
 	// 操作成功
 	description := fmt.Sprintf("User %s follows user %s.", fan, star)
-	common.OperationSuccess(c, description)
+	common.OperationSuccess(c, description, "")
 }
 
 func UnFollow(c *gin.Context) {
@@ -86,7 +86,7 @@ func UnFollow(c *gin.Context) {
 	}
 
 	description := fmt.Sprintf("User %s unfollows user %s.", fan, star)
-	common.OperationSuccess(c, description)
+	common.OperationSuccess(c, description, "")
 }
 
 func GetFollows(c *gin.Context) {

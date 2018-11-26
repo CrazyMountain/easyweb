@@ -39,5 +39,5 @@ func SignUp(c *gin.Context) {
 
 	// 创建成功
 	description := fmt.Sprintf("User %s signed up successfully.", username)
-	common.OperationSuccess(c, description)
+	common.OperationSuccess(c, description, "")
 }

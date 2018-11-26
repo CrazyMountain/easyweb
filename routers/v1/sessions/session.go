@@ -57,7 +57,7 @@ func SignIn(c *gin.Context) {
 
 	c.SetCookie("session_id", newId, 0, "/", "localhost", false, true)
 	description := fmt.Sprintf("User %s signed in with session %s.", username, newId)
-	common.OperationSuccess(c, description)
+	common.OperationSuccess(c, description, "")
 }
 
 func SignOut(c *gin.Context) {
@@ -75,5 +75,5 @@ func SignOut(c *gin.Context) {
 
 	// 操作成功
 	description := fmt.Sprintf("Session %s deleted.", id)
-	common.OperationSuccess(c, description)
+	common.OperationSuccess(c, description, "")
 }
