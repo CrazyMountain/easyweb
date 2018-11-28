@@ -21,8 +21,8 @@ func InitRouter() *gin.Engine {
 	follow := user.Group("/:username/follows")
 	{
 		// 关注
-		follow.POST("", v1.Follow)
-		follow.DELETE("", v1.UnFollow)
+		follow.POST("/:followed", v1.Follow)
+		follow.DELETE("/:followed", v1.UnFollow)
 		follow.GET("/:flag", v1.GetFollows)
 	}
 

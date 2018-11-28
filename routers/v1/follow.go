@@ -9,14 +9,7 @@ import (
 
 func Follow(c *gin.Context) {
 	fan := c.Param("username")
-	star := c.PostForm("followed")
-
-	// 校验参数
-	if len(star) == 0 {
-		errMsg := "Field followed missing."
-		OperationFailed(c, http.StatusBadRequest, errMsg)
-		return
-	}
+	star := c.Param("followed")
 
 	// 校验用户是否存在
 	if ok, _ := models.IsUserExists(fan); !ok {
@@ -39,7 +32,7 @@ func Follow(c *gin.Context) {
 	}
 
 	if err := models.AddFollow(fan, star); nil != err {
-		OperationFailed(c, http.StatusBadRequest, err.Error())
+		OperationFailed(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -50,14 +43,7 @@ func Follow(c *gin.Context) {
 
 func UnFollow(c *gin.Context) {
 	fan := c.Param("username")
-	star := c.PostForm("followed")
-
-	// 校验参数
-	if len(star) == 0 {
-		errMsg := "Field star missing."
-		OperationFailed(c, http.StatusBadRequest, errMsg)
-		return
-	}
+	star := c.Param("followed")
 
 	// 校验用户是否存在
 	if ok, _ := models.IsUserExists(fan); !ok {
@@ -106,7 +92,7 @@ func GetFollows(c *gin.Context) {
 			OperationFailed(c, http.StatusInternalServerError, err.Error())
 			return
 		}
-		description := fmt.Sprintf("User %s'followers.", username)
+		description := fmt.Sprintf("User %s' followers.", username)
 		OperationSuccess(c, description, fans)
 	case "1":
 		stars, err := models.GetFollowed(username)
