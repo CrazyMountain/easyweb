@@ -70,6 +70,7 @@ func UnFollow(c *gin.Context) {
 		return
 	}
 
+	// 操作成功
 	description := fmt.Sprintf("User %s unfollows user %s.", fan, star)
 	OperationSuccess(c, description, "")
 }

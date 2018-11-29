@@ -11,6 +11,7 @@ import (
 var db *gorm.DB
 
 func init() {
+	// init database
 	dbType := setting.DatabaseType
 	dbUsername := setting.DatabaseUsername
 	dbPassword := setting.DatabasePassword

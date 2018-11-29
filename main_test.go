@@ -16,6 +16,7 @@ import (
 	"testing"
 )
 
+// some const for test
 const (
 	testUsername  = "neo"
 	testPassword  = "123"
@@ -24,6 +25,7 @@ const (
 	randomFlag    = "5"
 )
 
+// api targets for test
 var targets = map[string]string{
 	"users":    "/v1/users",
 	"sessions": "/v1/sessions",
@@ -60,13 +62,13 @@ func init() {
 
 	user := router.Group("/v1/users")
 	{
-		// 注册
+		// sign up
 		user.POST("", v1.SignUp)
 	}
 
 	follow := user.Group("/:username/follows")
 	{
-		// 关注
+		// follow
 		follow.POST("/:followed", v1.Follow)
 		follow.DELETE("/:followed", v1.UnFollow)
 		follow.GET("/:flag", v1.GetFollows)
@@ -74,12 +76,12 @@ func init() {
 
 	session := router.Group("/v1/sessions")
 	{
-		// 登录退出
+		// sign int and sign out
 		session.POST("", v1.SignIn)
 		session.DELETE("", v1.SignOut)
 	}
 
-	// 初始化测试参数
+	// initial test parameters
 
 	signUp = testParameters{
 		bodies: []url.Values{
@@ -375,19 +377,10 @@ func TestSignIn(t *testing.T) {
 	Convey("Test sign in.", t, func() {
 		for i, desc := range signIn.descriptions {
 
-			request := httptest.NewRequest(http.MethodPost, targets["sessions"], strings.NewReader(signIn.bodies[i].Encode()))
-			request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
 			if i == 0 {
 				Patch(models.IsSignIn, func(_ string) (bool, error) {
 					return true, nil
 				})
-
-				c := http.Cookie{
-					Name:  "session_id",
-					Value: testSessionID,
-				}
-				request.AddCookie(&c)
 			}
 			if i == 3 {
 				Patch(models.IsUserExists, func(_ string) (bool, error) {
@@ -416,6 +409,17 @@ func TestSignIn(t *testing.T) {
 				Patch(models.StartSession, func(_ string) (string, error) {
 					return testSessionID, nil
 				})
+			}
+
+			request := httptest.NewRequest(http.MethodPost, targets["sessions"], strings.NewReader(signIn.bodies[i].Encode()))
+			request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+			if i == 0 {
+				c := http.Cookie{
+					Name:  "session_id",
+					Value: testSessionID,
+				}
+				request.AddCookie(&c)
 			}
 
 			recorder := httptest.NewRecorder()
@@ -452,15 +456,6 @@ func TestSignOut(t *testing.T) {
 	Convey("Test sign out.", t, func() {
 		for i, desc := range signOut.descriptions {
 
-			request := httptest.NewRequest(http.MethodDelete, targets["sessions"], nil)
-
-			if i > 0 {
-				c := http.Cookie{
-					Name:  "session_id",
-					Value: testSessionID,
-				}
-				request.AddCookie(&c)
-			}
 			if i == 1 {
 				Patch(models.EndSession, func(_ string) error {
 					return fmt.Errorf("database error")
@@ -472,8 +467,17 @@ func TestSignOut(t *testing.T) {
 				})
 			}
 
-			recorder := httptest.NewRecorder()
+			request := httptest.NewRequest(http.MethodDelete, targets["sessions"], nil)
 
+			if i > 0 {
+				c := http.Cookie{
+					Name:  "session_id",
+					Value: testSessionID,
+				}
+				request.AddCookie(&c)
+			}
+
+			recorder := httptest.NewRecorder()
 			router.ServeHTTP(recorder, request)
 			result := recorder.Result()
 			bytes, _ := ioutil.ReadAll(result.Body)

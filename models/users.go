@@ -15,6 +15,7 @@ type User struct {
 }
 
 func init() {
+	// create table if not exists
 	if !db.HasTable(&User{}) {
 		db.CreateTable(&User{})
 	}

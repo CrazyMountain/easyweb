@@ -16,7 +16,6 @@ func SignIn(c *gin.Context) {
 			OperationFailed(c, http.StatusInternalServerError, errMsg)
 			return
 		}
-		fmt.Fprintf(gin.DefaultWriter, "Session %s does not exists or expired.\r\n", id)
 	}
 
 	// 校验用户名

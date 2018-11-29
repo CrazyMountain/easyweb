@@ -19,6 +19,7 @@ type Session struct {
 }
 
 func init() {
+	// create table if not exists
 	if !db.HasTable(&Session{}) {
 		db.CreateTable(&Session{})
 	}

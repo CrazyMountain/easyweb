@@ -11,6 +11,7 @@ type Follow struct {
 }
 
 func init() {
+	// create table if not exists
 	if !db.HasTable(&Follow{}) {
 		db.CreateTable(&Follow{})
 	}
